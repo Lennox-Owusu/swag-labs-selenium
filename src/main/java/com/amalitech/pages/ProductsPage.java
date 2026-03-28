@@ -93,7 +93,7 @@ public class ProductsPage {
     @Step("Verify cart badge count is: {expectedCount}")
     public ProductsPage verifyCartBadgeCount(int expectedCount) {
         WaitUtil.waitForVisible(driver, cartBadge, config.explicitWait());
-        assert cartBadge.getText().equals(String.valueOf(expectedCount));
+        WaitUtil.waitForText(driver, cartBadge, String.valueOf(expectedCount), config.explicitWait());
         return this;
     }
 

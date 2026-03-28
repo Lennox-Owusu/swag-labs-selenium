@@ -79,13 +79,6 @@ public class CheckoutPage {
         return this;
     }
 
-    @Step("Click finish")
-    public CheckoutPage clickFinish() {
-        WaitUtil.waitForClickable(driver, finishButton, config.explicitWait());
-        finishButton.click();
-        return this;
-    }
-
     @Step("Cancel checkout")
     public CartPage cancelCheckout() {
         WaitUtil.waitForClickable(driver, cancelButton, config.explicitWait());
@@ -112,7 +105,16 @@ public class CheckoutPage {
     @Step("Verify order summary is loaded")
     public CheckoutPage verifySummaryLoaded() {
         WaitUtil.waitForVisible(driver, pageTitle, config.explicitWait());
-        assert pageTitle.getText().equals("Checkout: Overview");
+        WaitUtil.waitForText(driver, pageTitle, "Checkout: Overview", config.explicitWait());
+        WaitUtil.waitForVisible(driver, finishButton, config.explicitWait());
+        return this;
+    }
+
+    @Step("Click finish")
+    public CheckoutPage clickFinish() {
+        WaitUtil.waitForVisible(driver, finishButton, config.explicitWait());
+        WaitUtil.waitForClickable(driver, finishButton, config.explicitWait());
+        finishButton.click();
         return this;
     }
 
@@ -125,6 +127,7 @@ public class CheckoutPage {
 
     @Step("Verify error message: {expectedText}")
     public void verifyErrorText(String expectedText) {
+        WaitUtil.waitForVisible(driver, errorMessage, config.explicitWait());
         WaitUtil.waitForText(driver, errorMessage, expectedText, config.explicitWait());
     }
 
