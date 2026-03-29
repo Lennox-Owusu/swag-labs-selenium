@@ -39,7 +39,10 @@ public class BaseTest {
                 "--disable-dev-shm-usage",
                 "--disable-gpu",
                 "--window-size=1920,1080",
-                "--remote-allow-origins=*"
+                "--remote-allow-origins=*",
+                "--disable-extensions",
+                "--disable-infobars",
+                "--single-process"
         );
 
         driver = new ChromeDriver(options);

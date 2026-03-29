@@ -44,6 +44,8 @@ public class CartPage {
     // ── Actions ───────────────────────────────────────────────────
     @Step("Remove product from cart: {productName}")
     public CartPage removeProductByName(String productName) {
+        int initialCount = driver.findElements(
+                org.openqa.selenium.By.cssSelector(".cart_item")).size();
         cartItems.stream()
                 .filter(item -> item.findElement(
                                 org.openqa.selenium.By.cssSelector(".inventory_item_name"))
@@ -54,8 +56,11 @@ public class CartPage {
                             org.openqa.selenium.By.cssSelector("[data-test^='remove']"));
                     WaitUtil.waitForClickable(driver, removeBtn, config.explicitWait());
                     removeBtn.click();
-                    WaitUtil.waitForInvisible(driver, item, config.explicitWait());
                 });
+        new org.openqa.selenium.support.ui.WebDriverWait(
+                driver, java.time.Duration.ofSeconds(config.explicitWait()))
+                .until(d -> d.findElements(
+                        org.openqa.selenium.By.cssSelector(".cart_item")).size() < initialCount);
         return this;
     }
 
@@ -63,6 +68,7 @@ public class CartPage {
     public CheckoutPage proceedToCheckout() {
         WaitUtil.waitForClickable(driver, checkoutButton, config.explicitWait());
         checkoutButton.click();
+        WaitUtil.waitForUrl(driver, "checkout-step-one", config.explicitWait());
         return new CheckoutPage(driver);
     }
 
@@ -77,7 +83,7 @@ public class CartPage {
     @Step("Verify cart page is loaded")
     public CartPage verifyPageLoaded() {
         WaitUtil.waitForVisible(driver, pageTitle, config.explicitWait());
-        assert pageTitle.getText().equals("Your Cart");
+        WaitUtil.waitForText(driver, pageTitle, "Your Cart", config.explicitWait());
         return this;
     }
 

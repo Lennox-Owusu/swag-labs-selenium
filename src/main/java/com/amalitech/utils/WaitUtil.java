@@ -42,4 +42,10 @@ public final class WaitUtil {
                 .until(ExpectedConditions.invisibilityOf(element));
     }
 
+    // Wait for URL to contain a specific string
+    public static void waitForUrl(WebDriver driver, String urlFragment, int timeoutSecs) {
+        log.info("Waiting for URL to contain: {}", urlFragment);
+        new WebDriverWait(driver, Duration.ofSeconds(timeoutSecs))
+                .until(ExpectedConditions.urlContains(urlFragment));
+    }
 }

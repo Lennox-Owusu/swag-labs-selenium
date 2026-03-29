@@ -81,7 +81,7 @@ public class ProductsPage {
     @Step("Verify products page is loaded")
     public ProductsPage verifyPageLoaded() {
         WaitUtil.waitForVisible(driver, pageTitle, config.explicitWait());
-        assert pageTitle.getText().equals("Products");
+        WaitUtil.waitForText(driver, pageTitle, "Products", config.explicitWait());
         return this;
     }
 
